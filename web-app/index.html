@@ -1,0 +1,45 @@
+<html lang="en">
+    <head>
+        <title>Register</title>
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/fonts.css">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    
+    <body id="register-page">
+        <!-- Logo Container -->
+        <div class="logo-container">
+            <h1 class="log-in-logo"><a href="#"><img src="img/Logo.svg" alt="FriendsRental"></a></h1>
+        </div>
+
+        <!-- Log In Input -->
+        <div class="input-container">
+            <form method="POST">
+                <div class="personal-info">
+                    <div class="col-6-md">
+                        <input type="text" class="form-control" name="name" id="fname" placeholder="First Name">
+                    </div>
+                    <div class="col-6-md">
+                        <input type="text" class="form-control" name="sname" id="sname" placeholder="Second Name">
+                    </div>                  
+                </div>
+                <div class="private-info">
+                    <div class="col-12-md">
+                        <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+                    </div>
+                    <div class="col-12-md">
+                        <input type="text" class="form-control" name="password" id="password" placeholder="Password">
+                    </div>
+                </div>
+            </form>
+            <button class="sign-in-button" type="submit"><img class="google-icon" src="img/google-icon.svg" alt=""><p>Sign in with Google</p></button>
+            <button id="register-button" class="register-button" type="submit" onclick="getUserInfo()"><p>Create New Account</p></button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>@ Copyright 2021</p>
+        </footer>
+        <script src="js/dom.js"></script>
+    </body>
+</html>

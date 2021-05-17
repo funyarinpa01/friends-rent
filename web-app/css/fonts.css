@@ -1,0 +1,32 @@
+
+/* Poppins */
+
+@font-face {
+    font-family: "Poppins-Regular";
+    src: url("../fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Poppins-Light";
+    src: url("../fonts/Poppins/Poppins-Light.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Poppins-Medium";
+    src: url("../fonts/Poppins/Poppins-Medium.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+/* Circle Rounded */
+
+@font-face {
+    font-family: "Circle-Rounded-Light";
+    src: url("../fonts/Circle-Rounded/CirceRounded-Regular5.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}

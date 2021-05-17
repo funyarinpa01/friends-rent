@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>Statistics</title>
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/fonts.css">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    
+    <body id="stats-page">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-logo-container">
+                <h1><a href="#" class="header-logo"><img src="img/Logo.svg" alt="FriendsRental"></a></h1>
+            </div>
+            
+            <nav class="navigation">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="statistics.html">Statistics</a>
+            </nav>
+
+            <div class="my-account-container">
+                <a href="shop.html" target="_blank">My Account</a>
+                <div class="account-photo"></div>
+            </div>
+        </header>
+
+        <!-- Main Section -->
+        <main>
+            <ul class="query-selector">
+                <li>
+                    <input type="text" class="query-form-control" name="query-id" id="query-id" placeholder="Query ID">
+                </li>
+                <li>
+                    <input type="text" class="query-form-control" name="person-name" id="person-name" placeholder="Person Full Name">
+                </li>
+                <li>
+                    <input type="text" class="query-form-control" name="times-num" id="times-num" placeholder="Number of Times">
+                </li>
+                <li>
+                    <input type="text" class="query-form-control" name="begin-date" id="begin-date" placeholder="Begin Date">
+                </li>
+                <li>
+                    <input type="text" class="query-form-control" name="end-date" id="end-date" placeholder="End Date">
+                </li>
+            </ul>
+            <div class="query-button-container">
+                <button id="send-query-button" class="submit-order-button" type="submit"><p>Send a Query</p></button>
+            </div>      
+        </main>
+        <!-- Footer -->
+        <footer class="footer">
+            <p>@ Copyright 2021</p>
+        </footer>
+        <script src="js/dom.js"></script>
+    </body>
+</html>
