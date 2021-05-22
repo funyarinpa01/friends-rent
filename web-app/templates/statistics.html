@@ -1,29 +1,14 @@
 <html>
     <head>
         <title>Statistics</title>
-        <link rel="stylesheet" href="css/reset.css">
-        <link rel="stylesheet" href="css/fonts.css">
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     </head>
     
     <body id="stats-page">
         <!-- Header -->
-        <header class="header">
-            <div class="header-logo-container">
-                <h1><a href="#" class="header-logo"><img src="img/Logo.svg" alt="FriendsRental"></a></h1>
-            </div>
-            
-            <nav class="navigation">
-                <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="statistics.html">Statistics</a>
-            </nav>
-
-            <div class="my-account-container">
-                <a href="shop.html" target="_blank">My Account</a>
-                <div class="account-photo"></div>
-            </div>
-        </header>
+        {% include 'header.html' %}
 
         <!-- Main Section -->
         <main>
@@ -49,9 +34,7 @@
             </div>      
         </main>
         <!-- Footer -->
-        <footer class="footer">
-            <p>@ Copyright 2021</p>
-        </footer>
-        <script src="js/dom.js"></script>
+        {% include 'footer.html' %}
+        <script src="{{ url_for('static', filename='js/dom.js') }}"></script>
     </body>
 </html>

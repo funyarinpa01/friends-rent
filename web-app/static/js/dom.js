@@ -2,14 +2,13 @@ document.addEventListener('DOMContentLoaded', function () {
     init();
 });
 
-
 const init = function() {
     var page = document.body.id;
     switch (page) {
         case 'register-page':
             document.getElementById("register-button").onclick = function () {
                 getUserInfo();
-                window.document.location = "shop.html";
+                window.document.location = "shop";
             }
             break;
         case 'shop-page':
@@ -18,10 +17,10 @@ const init = function() {
         case 'order-page':
             document.getElementById("order-button").onclick = function () {
                 getOrderInfo();
-                window.document.location = "shop.html";
+                window.document.location = "shop";
             }
             break;
-        case 'stats-page':
+        case 'browse-page':
             document.getElementById("send-query-button").onclick = function () {
                 getQueryInfo();
             }

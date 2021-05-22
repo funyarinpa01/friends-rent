@@ -1,0 +1,16 @@
+<header class="header">
+    <div class="header-logo-container">
+        <h1><a href="#" class="header-logo"><img src="{{ url_for('static', filename='img/Logo.svg') }}" alt="FriendsRental"></a></h1>
+    </div>
+
+    <nav class="navigation">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('shop') }}">Shop</a>
+        <a href="{{ url_for('statistics') }}">Statistics</a>
+    </nav>
+
+    <div class="my-account-container">
+        <a href="{{ url_for('shop') }}" target="_blank">My Account</a>
+        <div class="account-photo"></div>
+    </div>
+</header>

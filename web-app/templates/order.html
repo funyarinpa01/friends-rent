@@ -1,34 +1,19 @@
 <html>
     <head>
         <title>Order</title>
-        <link rel="stylesheet" href="css/reset.css">
-        <link rel="stylesheet" href="css/fonts.css">
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     </head>
     <body id="order-page">
         <!-- Header -->
-        <header class="header">
-            <div class="header-logo-container">
-                <h1><a href="#" class="header-logo"><img src="img/Logo.svg" alt="FriendsRental"></a></h1>
-            </div>
-            
-            <nav class="navigation">
-                <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="statistics.html">Statistics</a>
-            </nav>
-
-            <div class="my-account-container">
-                <a href="shop.html" target="_blank">My Account</a>
-                <div class="account-photo"></div>
-            </div>
-        </header>
+        {% include 'header.html' %}
 
         <!-- Main Section -->
         <main>
             <!-- Order Description -->
             <div class="order-container">
-                <div class="order-friend-image"><img src="img/itachi-icon.png" alt=""></div>
+                <div class="order-friend-image"><img src="{{ url_for('static', filename='img/itachi.png') }}" alt=""></div>
                 <div class="order-description">
                     <h2>Itachi Uchiha</h2>
                     <p class="order-price">9 999$</p>
@@ -67,9 +52,7 @@
             </ul>
         </main>
         <!-- Footer -->
-        <footer class="footer">
-            <p>@ Copyright 2021</p>
-        </footer>
-        <script src="js/dom.js"></script>
+        {% include 'footer.html' %}
+        <script src="{{ url_for('static', filename='js/dom.js') }}"></script>
     </body>
 </html>
