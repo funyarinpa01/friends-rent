@@ -1,8 +1,11 @@
 from flask import Flask, render_template
 
+from scripts.database import DataBase
+
 
 app = Flask(__name__)
 app.config.update(SEND_FILE_MAX_AGE_DEFAULT=0)  # i think it stops the browser from caching old versions
+db = DataBase()
 
 
 @app.route("/")
