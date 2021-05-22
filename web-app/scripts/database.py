@@ -45,7 +45,9 @@ class DataBase:
         self.conn.commit()
         return self.cur.fetchall()
 
-    def run_query(self, query_text, verbose=False):
+    # somewhere here methods for inserting new users / orders
+
+    def _run_query(self, query_text, verbose=False):
         self.cur.execute(query_text)
         if verbose:
             print(self.cur.statusmessage)
