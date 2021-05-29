@@ -1,2 +1,4 @@
 /.idea
 /web-app/.idea
+/web-app/scripts/__pycache__
+/web-app/__pycache__
