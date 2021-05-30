@@ -1,10 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, session, logging
 from scripts.database import DataBase
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators
+from passlib.hash import sha256_crypt
+import psycopg2
+from config import config
 
 
 app = Flask(__name__)
 
-client_info_ = None
 friend_info_ = None
 order_info_ = None
 
@@ -29,19 +32,40 @@ def statistics():
     return render_template('statistics.html', data=[])
 
 
+class RegistrationForm(Form):
+    name = StringField(u'First Name', [validators.InputRequired()])
+    sname = StringField(u'Second Name', [validators.InputRequired()])
+    email = StringField(u'Email', [validators.InputRequired()])
+    password = PasswordField(u'Password', [validators.InputRequired()])
+
+
 @app.route('/index', methods=['GET', 'POST'])
 def get_client_info():
-    global client_info_
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        first_name = form.name.data
+        second_name = form.sname.data
+        email = form.email.data
+        password = sha256_crypt.hash(str(form.password.data))
 
-    if request.method == 'POST':
-        client_info = {
-            "first_name": request.form.get('name'),
-            "last_name": request.form.get('sname'),
-            "email": request.form.get('email'),
-            "password": request.form.get('password')
-        }
-        client_info_ = client_info
+        params = config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+
+        cur.execute(
+            "INSERT INTO users(first_name, second_name, email, password) VALUES (%s, %s, %s, %s)",
+            (first_name, second_name, email, password))
+
+        cur.close()
+
+        conn.commit()
+
+        conn.close()
+
+        flash("You were successfully registered", "success")
+
         return redirect(url_for('shop'))
+    return render_template('index.html', form=form)
 
 
 @app.route('/order', methods=['POST'])
@@ -80,4 +104,6 @@ def get_query_info():
 
 
 if __name__ == '__main__':
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.run(debug=True)
