@@ -2,7 +2,7 @@ import psycopg2
 import time
 import datetime
 
-from queries import queries, num_args
+from scripts.queries import queries, num_args
 
 
 class DataBase:
