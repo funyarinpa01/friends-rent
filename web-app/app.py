@@ -61,6 +61,8 @@ def get_order_info():
         friend_info_ = friend_info
         order_info_ = order_info
         # Add order info to DB
+        db = DataBase()
+        db.insert_order(client_info_, friend_info_, order_info_)
         return redirect(url_for('shop'))
 
 

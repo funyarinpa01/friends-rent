@@ -46,6 +46,27 @@ class DataBase:
         return self.cur.fetchall()
 
     # somewhere here methods for inserting new users / orders
+    def insert_order(self, client, friend, order):
+
+        self._run_query(
+            f"INSERT INTO client (first_name, last_name) VALUES ('{client['first_name']}', '{client['last_name']}');"
+        )
+
+        client_id = self._run_query(
+            "SELECT MAX(client_id) FROM client;"
+        )[0][0]
+
+        self._run_query(
+            f"INSERT INTO party (client_id, begin_date, end_date) VALUES ('{client_id}', '{order['begin_date']}', '{order['end_date']}');"
+        )
+
+        party_id = self._run_query(
+            "SELECT MAX(party_id) FROM party;"
+        )[0][0]
+
+        self._run_query(
+            f"INSERT INTO party_friend (party_id, friend_id) VALUES ('{party_id}', '{friend['friend_id']}');"
+        )
 
     def _run_query(self, query_text, verbose=False):
         self.cur.execute(query_text)
@@ -68,7 +89,8 @@ if __name__ == '__main__':
     db = DataBase()
 
     res = db.run_task_query(1,  # query id
-                            'Oleksandr Dubas', datetime.date(2021, 5, 1), datetime.date(2021, 5, 10), 1, # arguments (as ordered in query) TODO somehow signify the order
+                            'Oleksandr Dubas', datetime.date(2021, 5, 1), datetime.date(2021, 5, 10), 1,
+                            # arguments (as ordered in query) TODO somehow signify the order
                             verbose=True)  # print query status
 
     print(res)
