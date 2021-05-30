@@ -82,6 +82,9 @@ INSERT INTO client (first_name, last_name) VALUES
 ('Volodymyr', 'Ostapenko'),
 ('Vlad', 'Semikin');
 
+-- Change the date style
+SET datestyle = "ISO, DMY";
+
 INSERT INTO party (client_id, begin_date, end_date) VALUES
 (1, '05-05-2021', '07-05-2021'),
 (2, '09-05-2021', '10-05-2021'),
@@ -216,9 +219,11 @@ INSERT INTO present (client_id, friend_id, date_returned, category_id) VALUES
 (10, 8, '01-07-2021', 10);
 
 CREATE VIEW friend_client AS
-	SELECT f.friend_id, f.first_name || ' ' || f.last_name AS friend_name, friend_type, 
-		   c.client_id, c.first_name || ' ' || c.last_name AS client_name,
-		   p.party_id, p.begin_date, p.end_date FROM friend f
+	SELECT f.friend_id, f.first_name AS friend_first_name, f.last_name AS friend_last_name, 
+		   friend_type, 
+		   c.client_id, c.first_name AS client_first_name, c.last_name AS client_last_name,
+		   p.party_id, p.begin_date, p.end_date 
+	FROM friend f
 	LEFT JOIN party_friend pf ON pf.friend_id = f.friend_id
 	LEFT JOIN party p ON pf.party_id = p.party_id
 	LEFT JOIN client c ON p.party_id = c.client_id;
@@ -245,18 +250,18 @@ CREATE INDEX idx_friend_type
 
 -- 1. Для клiєнта С знайти усiх друзiв, яких вiн наймав принаймнi N разiв за вказаний перiод (з
 -- дати F по дату T);
-SELECT friend_name, COUNT(friend_id) AS times_ordered
+SELECT (fc.friend_first_name || ' ' || fc.friend_last_name) AS friend_name, COUNT(friend_id) AS times_ordered
 	FROM friend_client fc
-	WHERE client_name = ((c.first_name || ' ' || c.last_name)) AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
+	WHERE (fc.client_first_name || ' ' || fc.client_last_name) = 'Oleksandr Dubas' AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
 	GROUP BY friend_name
 	HAVING COUNT(friend_id) >= 1;
 	
 
 -- 2. Для найманого друга Х знайти усiх клiєнтiв, якi наймали його принаймнi N разiв за вказаний перiод 
 -- (з дати F по дату T);
-SELECT client_name, COUNT(client_id) AS times_ordered 
+SELECT (fc.client_first_name || ' ' || fc.client_last_name) AS client_name, COUNT(client_id) AS times_ordered 
 	FROM friend_client fc
-	WHERE friend_name = ((f.first_name || ' ' || f.last_name)) AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
+	WHERE (fc.friend_first_name || ' ' || fc.friend_last_name) = 'Nazar Mamonov' AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
 	GROUP BY client_name
 	HAVING COUNT(client_id) >= 1;
 	
@@ -266,7 +271,7 @@ SELECT client_name, COUNT(client_id) AS times_ordered
 SELECT ft.name AS party_name, COUNT(ft.type_id) AS times_ordered
 	FROM friend_client fc
 	LEFT JOIN friend_type ft ON fc.friend_type = ft.type_id
-	WHERE friend_name = ((f.first_name || ' ' || f.last_name)) AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
+	WHERE (fc.friend_first_name || ' ' || fc.friend_last_name) = 'Nazar Mamonov' AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
 	GROUP BY ft.type_id
 	HAVING COUNT(ft.type_id) >= 1;
 	
@@ -274,7 +279,7 @@ SELECT ft.name AS party_name, COUNT(ft.type_id) AS times_ordered
 -- 4. Знайти усiх клiєнтiв, якi наймали щонайменше N рiзних друзiв за вказаний перiод (з дати
 -- F по дату T);
 SELECT d.client_name, COUNT(d.client_id) AS times_ordered 
-	FROM (SELECT DISTINCT friend_id, client_id, client_name 
+	FROM (SELECT DISTINCT friend_id, client_id, (fc.client_first_name || ' ' || fc.client_last_name) AS client_name 
 		  FROM friend_client fc
 		  WHERE begin_date <= '06-05-2021' AND '06-05-2021' <= end_date) AS d
 	GROUP BY d.client_id, d.client_name
@@ -283,7 +288,7 @@ SELECT d.client_name, COUNT(d.client_id) AS times_ordered
 
 -- 5. Знайти усiх найманих друзiв, яких наймали хоча б N разiв за вказаний перiод (з дати F по
 -- дату T);
-SELECT friend_name, COUNT(friend_id) AS times_ordered 
+SELECT (fc.friend_first_name || ' ' || fc.friend_last_name) AS friend_name, COUNT(friend_id) AS times_ordered 
 	FROM friend_client fc
 	WHERE begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
 	GROUP BY friend_id, friend_name
@@ -302,41 +307,48 @@ SELECT EXTRACT(MONTH FROM p.begin_date) AS month, COUNT(ft.name) AS occurence_nu
 
 -- 7. Для найманого друга Х та кожного свята, на якому вiн побував, знайти скiльки разiв
 -- за вказаний перiод (з дати F по дату T) вiн був найнятий на свято у групi з принаймнi N друзiв;
-SELECT fc.friend_name, ft.name AS party_name, COUNT(ft.type_id) AS times_ordered
-FROM friend_client fc
-LEFT JOIN friend_type ft ON fc.friend_type = ft.type_id
-WHERE friend_name = ((f.first_name || ' ' || f.last_name)) AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
-GROUP BY fc.friend_name, ft.name
-HAVING COUNT(fc.friend_id) >= 1;
+SELECT 
+	fc.friend_first_name || ' ' || fc.friend_last_name AS friend_name, 
+	ft.name AS party_name, 
+	COUNT(ft.type_id) AS times_ordered
+	FROM friend_client fc
+	LEFT JOIN friend_type ft ON fc.friend_type = ft.type_id
+	WHERE (fc.friend_first_name || ' ' || fc.friend_last_name) = 'Nazar Mamonov' 
+		AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
+	GROUP BY friend_name, ft.name
+	HAVING COUNT(fc.friend_id) >= 1;
 
 -- 8. Вивести подарунки у порядку спадання середньої кiлькостi вихiдних, що брали 
 -- найманi друзi, якi отримували подарунок вiд клiєнта С протягом вказаного перiоду (з дати F по дату T);
 SELECT cat.name
-FROM friend_client fc
-LEFT JOIN present pr ON fc.client_id = pr.client_id
-LEFT JOIN category cat ON pr.category_id = cat.category_id
-LEFT JOIN day_off dof ON fc.friend_id = dof.friend_id 
-WHERE client_name = ((c.first_name || ' ' || c.last_name)) AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
-GROUP BY  cat.name 
-ORDER BY COUNT(day_off_id) DESC;
+	FROM friend_client fc
+	LEFT JOIN present pr ON fc.client_id = pr.client_id
+	LEFT JOIN category cat ON pr.category_id = cat.category_id
+	LEFT JOIN day_off dof ON fc.friend_id = dof.friend_id 
+	WHERE (fc.client_first_name || ' ' || fc.client_last_name) = 'Oleksandr Dubas'
+		AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
+	GROUP BY  cat.name 
+	ORDER BY COUNT(day_off_id) DESC;
 
 -- 9. Вивести найманих друзiв у порядку спадання кiлькость скарг вiд груп з принаймнi N 
 -- клiєнтiв за вказаний перiод (з дати F по дату T);
-SELECT fc.friend_name
-FROM friend_client fc
-LEFT JOIN client_report cr ON fc.client_id = cr.client_id
-LEFT JOIN report r ON fc.friend_id = r.friend_id
-WHERE begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
-GROUP BY fc.friend_name
-HAVING COUNT(cr.client_id) >= 2;
+SELECT fc.friend_first_name || ' ' || fc.friend_last_name AS friend_name
+	FROM friend_client fc
+	LEFT JOIN client_report cr ON fc.client_id = cr.client_id
+	LEFT JOIN report r ON fc.friend_id = r.friend_id
+	WHERE begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
+	GROUP BY friend_name
+	HAVING COUNT(cr.client_id) >= 2;
 
 -- 10. Знайти усi спiльнi подiї для клiєнта С та найманого друга Х 
 -- за вказаний перiод (з дати F по дату T);
 SELECT ft.name AS party_name
-FROM friend_client fc
-LEFT JOIN friend_type ft ON fc.friend_type = ft.type_id
-WHERE friend_name = ((f.first_name || ' ' || f.last_name)) AND client_name = ((c.first_name || ' ' || c.last_name)) AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
-GROUP BY ft.name;
+	FROM friend_client fc
+	LEFT JOIN friend_type ft ON fc.friend_type = ft.type_id
+	WHERE (fc.friend_first_name || ' ' || fc.friend_last_name) = 'Nazar Mamonov'
+		AND (fc.client_first_name || ' ' || fc.client_last_name) = 'Oleksandr Dubas'
+		AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
+	GROUP BY ft.name;
 
 
 -- 11. Знайти усi днi коли вихiдними були вiд А до В найманих друзiв, включно;
@@ -392,4 +404,3 @@ WHERE client_id IN (
 	AND friend_name IN (
 	'Nazar Mamonov')
 GROUP BY month_num;
-
