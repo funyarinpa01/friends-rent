@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     </head>
-    
+
     <body id="stats-page">
         <!-- Header -->
         {% include 'header.html' %}
@@ -34,10 +34,28 @@
                     <button id="send-query-button" class="submit-order-button" type="submit"><p>Send a Query</p></button>
                 </div>
             </form>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        {% for col in data[0] %}
+                            <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data[1:] %}
+                    <tr>
+                        {% for entry in row %}
+                            <td>{{ entry }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </main>
         <!-- Footer -->
         {% include 'footer.html' %}
         <script src="{{ url_for('static', filename='js/dom.js') }}"></script>
-<!--        <script src="{{ url_for('static', filename='js/queries.js') }}"></script>-->
+        <script src="{{ url_for('static', filename='js/queries.js') }}"></script>
     </body>
 </html>

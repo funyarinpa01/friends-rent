@@ -26,14 +26,7 @@ def order():
 
 @app.route('/statistics')
 def statistics():
-    return render_template('statistics.html')
-
-
-@app.route('/statistics-output')
-def statistics_output():
-    # get and process query result from DB and render it
-    data_ = [["First Name", "Last Name"], ["Yaroslav", "Morozevych"], ["Itachi", "Uchiha"]]
-    return render_template('statistics-output.html', data=data_)
+    return render_template('statistics.html', data=[])
 
 
 @app.route('/index', methods=['GET', 'POST'])
@@ -82,7 +75,8 @@ def get_query_info():
             "end_date": request.form.get('end-date')
         }
         # Send Query to DB and re-render the page
-        return redirect(url_for('statistics_output'))
+        data_ = [["First Name", "Last Name"], ["Yaroslav", "Morozevych"], ["Itachi", "Uchiha"]]
+        return render_template('statistics.html', data=data_)
 
 
 if __name__ == '__main__':
