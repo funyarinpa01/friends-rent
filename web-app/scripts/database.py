@@ -2,7 +2,7 @@ import psycopg2
 import time
 import datetime
 
-from scripts.queries import queries, num_args
+from queries import queries, num_args
 
 
 class DataBase:
@@ -29,7 +29,7 @@ class DataBase:
             self.conn = self.P.conn
             self.cur = self.P.cur
 
-    def run_task_query(self, query_id, *args, verbose=False):
+    def run_task_query(self, query_id, args, verbose=False):
         if not isinstance(query_id, int):
             raise TypeError(f"query_id must be of type integer, not {type(query_id)}")
         if not 1 <= query_id <= 12:
@@ -49,27 +49,27 @@ class DataBase:
     def insert_order(self, client, friend, order):
 
         self._run_query(
-            f"INSERT INTO client (first_name, last_name) VALUES ('{client['first_name']}', '{client['last_name']}');"
-        )
+            "INSERT INTO client (first_name, last_name) VALUES (%s, %s);"
+            , (client['first_name'], client['last_name']))
 
         client_id = self._run_query(
             "SELECT MAX(client_id) FROM client;"
         )[0][0]
 
         self._run_query(
-            f"INSERT INTO party (client_id, begin_date, end_date) VALUES ('{client_id}', '{order['begin_date']}', '{order['end_date']}');"
-        )
+            "INSERT INTO party (client_id, begin_date, end_date) VALUES (%s, %s, %s);"
+            , (client_id, order['begin_date'], order['end_date']))
 
         party_id = self._run_query(
             "SELECT MAX(party_id) FROM party;"
         )[0][0]
 
         self._run_query(
-            f"INSERT INTO party_friend (party_id, friend_id) VALUES ('{party_id}', '{friend['friend_id']}');"
-        )
+            "INSERT INTO party_friend (party_id, friend_id) VALUES (%s, %s);"
+            , (party_id, friend['friend_id']))
 
-    def _run_query(self, query_text, verbose=False):
-        self.cur.execute(query_text)
+    def _run_query(self, query_text, args, verbose=False):
+        self.cur.execute(query_text, args)
         if verbose:
             print(self.cur.statusmessage)
 
@@ -89,9 +89,9 @@ if __name__ == '__main__':
     db = DataBase()
 
     res = db.run_task_query(1,  # query id
-                            'Oleksandr Dubas', datetime.date(2021, 5, 1), datetime.date(2021, 5, 10), 1,
+                            ('Oleksandr Dubas', datetime.date(2021, 5, 1), datetime.date(2021, 5, 10), 1),
                             # arguments (as ordered in query) TODO somehow signify the order
-                            verbose=True)  # print query status
+                            verbose=False)  # print query status
 
     print(res)
 
