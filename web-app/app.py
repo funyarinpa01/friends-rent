@@ -21,6 +21,13 @@ def index():
 def shop():
     return render_template('shop.html')
 
+@app.route('/logIn')
+def logIn():
+    return render_template('logIn.html')
+
+@app.route('/signUp')
+def signUp():
+    return render_template('signUp.html')
 
 @app.route('/order')
 def order():
