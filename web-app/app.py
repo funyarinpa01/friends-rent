@@ -8,6 +8,7 @@ from config import config
 
 app = Flask(__name__)
 
+client_info_ = None
 friend_info_ = None
 order_info_ = None
 
