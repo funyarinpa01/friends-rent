@@ -246,6 +246,9 @@ CREATE INDEX idx_party_time
 
 CREATE INDEX idx_friend_type 
 	ON friend_type(name);
+	
+CREATE INDEX idx_present_return_date 
+	ON present(date_returned);
 
 
 -- 1. Для клiєнта С знайти усiх друзiв, яких вiн наймав принаймнi N разiв за вказаний перiод (з
