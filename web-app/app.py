@@ -7,6 +7,7 @@ from config import config
 
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # don't touch it for now, stops browser from caching old css, etc.
 
 friend_info_ = None
 order_info_ = None

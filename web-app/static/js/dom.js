@@ -20,7 +20,7 @@ const init = function() {
                 window.document.location = "shop";
             }
             break;
-        case 'browse-page':
+        case 'stats-page':
             document.getElementById("send-query-button").onclick = function () {
                 getQueryInfo();
             }
