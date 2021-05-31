@@ -1,0 +1,54 @@
+<html lang="en">
+    <head>
+        <title>Register</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body id="register-page">
+        <!-- Logo Container -->
+        <div class="logo-container">
+            <h1 class="log-in-logo"><a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='img/Logo.svg') }}" alt="FriendsRental"></a>
+            </h1>
+        </div>
+
+        <!-- Log In Input -->
+        <div class="input-container">
+            <form action="{{ url_for('register') }}" method="POST">
+                <div class="custom-select" style="width:200px;">
+                  <select name= roles method="GET" action="/register">
+                      {% for role in roles %}
+                      <option value= "{{role}}" SELECTED>{{role}}</option>"
+                      {% endfor %}
+                  </select>
+                </div>
+                <div class="personal-info">
+                    <div class="col-6-md">
+                        <input type="text" class="form-control" name="name" id="fname" placeholder="First Name">
+                    </div>
+                    <div class="col-6-md">
+                        <input type="text" class="form-control" name="sname" id="sname" placeholder="Second Name">
+                    </div>
+                </div>
+                <div class="private-info">
+                    <div class="col-12-md">
+                        <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+                    </div>
+                    <div class="col-12-md">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                    </div>
+                </div>
+                <button class="sign-in-button" type="submit"><img class="google-icon" src="{{ url_for('static', filename='img/google-icon.svg') }}" alt=""><p>Sign in with Google</p></button>
+                <!-- <button id="register-button" class="register-button" type="submit"><p>Create New Account</p></button> -->
+                <button id="register-button" class="register-button" type="submit"><p>Create New Account</p></button>
+            </form>
+
+        </div>
+
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <script src="{{ url_for('static', filename='js/dom.js') }}"></script>
+    </body>
+</html>

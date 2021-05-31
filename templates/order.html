@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>Order</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+    <body id="order-page">
+        <!-- Header -->
+        {% include 'header.html' %}
+
+        <!-- Main Section -->
+        <main>
+            <!-- Order Description -->
+            <form action="{{ url_for('get_order_info') }}" method="POST">
+                <div class="order-container">
+                    <div class="order-friend-image"><img src="{{ url_for('static', filename='img/itachi.png') }}" alt=""></div>
+                    <div class="order-description">
+                        <h2>Itachi Uchiha</h2>
+                        <p class="order-price">9 999$</p>
+                        <p class="order-desc">This friend has all you need to make your party unforgetable. Also, he can wipe out all your family, so be careful!</p>
+                        <ul class="order-buttons">
+                            <li><button id="order-button" class="submit-order-button" type="submit"><p>Order</p></button></li>
+                            <li><button class="report-button" type="submit"><p>Report</p></button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Order Details -->
+                <ul class="order-selector">
+                    <li>
+                        <select name="party-type" id="party-type">
+                            <option selected disabled>Party Type</option>
+                            <option value="Party">Party</option>
+                            <option value="Wedding">Wedding</option>
+                            <option value="Drinking">Drinking</option>
+                        </select>
+                    </li>
+                    <li>
+                        <input type="text" class="order-form-control" name="begin-date" id="begin-date" placeholder="Begin Date">
+                    </li>
+                    <li>
+                        <input type="text" class="order-form-control" name="end-date" id="end-date" placeholder="End Date">
+                    </li>
+                    <li>
+                        <select name="present" id="present">
+                            <option selected disabled>Present</option>
+                            <option value="Box">Box</option>
+                            <option value="CSGO Skin">CSGO Skin</option>
+                            <option value="Blad3">Blad3</option>
+                        </select>
+                    </li>
+                </ul>
+            </form>
+        </main>
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <script src="{{ url_for('static', filename='js/dom.js') }}"></script>
+    </body>
+</html>

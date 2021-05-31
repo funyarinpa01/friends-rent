@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <title>Statistics</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body id="stats-page">
+        <!-- Header -->
+        {% include 'header.html' %}
+
+        <!-- Main Section -->
+        <main>
+            <form action="{{ url_for('get_query_info') }}" method="POST">
+                <div class="query-selector">
+                    <select class="query-form-control" name="query-id" id="query-id">
+                        <option disabled selected value> Select a Query </option>
+                        <option value="1"> Query 1 </option>
+                        <option value="2"> Query 2 </option>
+                        <option value="3"> Query 3 </option>
+                        <option value="4"> Query 4 </option>
+                        <option value="5"> Query 5 </option>
+                        <option value="6"> Query 6 </option>
+                        <option value="7"> Query 7 </option>
+                        <option value="8"> Query 8 </option>
+                        <option value="9"> Query 9 </option>
+                        <option value="10"> Query 10 </option>
+                        <option value="11"> Query 11 </option>
+                        <option value="12"> Query 12 </option>
+                    </select>
+                </div>
+                <ul class="query-arguments" id="query-arguments"></ul>
+{#                <ul class="query-selector">#}
+{#                    <li>#}
+{#                        <input type="text" class="query-form-control" name="query-id" id="query-id" placeholder="Query ID">#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <input type="text" class="query-form-control" name="person-name" id="person-name" placeholder="Person Full Name">#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <input type="text" class="query-form-control" name="times-num" id="times-num" placeholder="Number of Times">#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <input type="text" class="query-form-control" name="begin-date" id="begin-date" placeholder="Begin Date" onfocus="(this.type='date')" onblur="(this.type='text')">#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <input type="text" class="query-form-control" name="end-date" id="end-date" placeholder="End Date" onfocus="(this.type='date')" onblur="(this.type='text')">#}
+{#                    </li>#}
+{#                </ul>#}
+                <div class="query-button-container">
+                    <button id="send-query-button" class="submit-order-button" type="submit"><p>Query</p></button>
+                </div>
+            </form>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        {% for col in data[0] %}
+                            <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data[1:] %}
+                    <tr>
+                        {% for entry in row %}
+                            <td>{{ entry }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="query-info-container">
+                <p class="query-info">
+                    <h2>Query Info</h2>
+                    <br><br>
+                    1: Для клiєнта С знайти усiх друзiв, яких вiн наймав принаймнi N разiв за вказаний перiод (з дати F по дату T)
+                    <br><br>
+                    2: Для найманого друга Х знайти усiх клiєнтiв, якi наймали його принаймнi N разiв за вказаний перiод (з дати F по дату T)
+                    <br><br>
+                    3: Для найманого друга Х знайти усi свята, на якi його наймали принаймнi N разiв за вказаний перiод (з дати F по дату T)
+                    <br><br>
+                    4: Знайти усiх клiєнтiв, якi наймали щонайменше N рiзних друзiв за вказаний перiод (з дати F по дату T)
+                    <br><br>
+                    5: Знайти усiх найманих друзiв, яких наймали хоча б N разiв за вказаний перiод (з дати F по дату T)
+                    <br><br>
+                    6: Знайти сумарну кiлькiсть побачень по мiсяцях
+                    <br><br>
+                    7: Для найманого друга Х та кожного свята, на якому вiн побував, знайти скiльки разiв за вказаний перiод (з дати F по дату T) вiн був найнятий на свято у групi з принаймнi N друзiв
+                    <br><br>
+                    8: Вивести подарунки у порядку спадання середньої кiлькостi вихiдних, що брали найманi друзi, якi отримували подарунок вiд клiєнта С протягом вказаного перiоду (з дати F по дату T)
+                    <br><br>
+                    9: Вивести найманих друзiв у порядку спадання кiлькость скарг вiд груп з принаймнi N клiєнтiв за вказаний перiод (з дати F по дату T)
+                    <br><br>
+                    10: Знайти усi спiльнi подiї для клiєнта С та найманого друга Х за вказаний перiод (з дати F по дату T)
+                    <br><br>
+                    11: Знайти усi днi коли вихiдними були вiд А до В найманих друзiв, включно
+                    <br><br>
+                    12: По мiсяцях знайти середню кiлькiсть клiєнтiв у групi, що реєстрували скаргу на найманого друга Х
+                </p>
+            </div>
+        </main>
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <script src="{{ url_for('static', filename='js/dom.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/queries.js') }}"></script>
+    </body>
+</html>

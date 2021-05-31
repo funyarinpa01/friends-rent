@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Home</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body id="shop-page">
+        <!-- Header -->
+        {% include 'header.html' %}
+
+        <!-- Main Section -->
+        <main>
+            <!-- Party Type Selector -->
+            <ul class="party-selector">
+                <li class="main-party-type">All</li>
+                <li class="secondary-party-type">Party</li>
+                <li class="secondary-party-type">Birthday</li>
+                <li class="secondary-party-type">Wedding</li>
+                <li class="secondary-party-type">Drinking</li>
+            </ul>
+
+            <!-- Friend Selector -->
+            <ul class="friend-selector">
+                <li class="friend-container">
+                    <a href="{{ url_for('order') }}">
+                        <div class="friend-image"><img src="{{ url_for('static', filename='img/hidan.jpeg') }}" alt=""></div>
+                        <p class="friend-name">Hidan</p>
+                        <p class="friend-price">Free</p>
+                    </a>
+                </li>
+                <li class="friend-container">
+                    <a href="{{ url_for('order') }}">
+                        <div class="friend-image"><img src="{{ url_for('static', filename='img/kakuzu.png') }}" alt=""></div>
+                        <p class="friend-name">Kakuzu</p>
+                        <p class="friend-price">199$</p>
+                    </a>
+                </li>
+                <li class="friend-container">
+                    <a href="{{ url_for('order') }}">
+                        <div class="friend-image"><img src="{{ url_for('static', filename='img/deidara.png') }}" alt=""></div>
+                        <p class="friend-name">Deidara</p>
+                        <p class="friend-price">125$</p>
+                    </a>
+                </li>
+                <li class="friend-container">
+                    <a href="{{ url_for('order') }}">
+                        <div class="friend-image"><img src="{{ url_for('static', filename='img/pain.jpeg') }}" alt=""></div>
+                        <p class="friend-name">Yahiko "Pain"</p>
+                        <p class="friend-price">999$</p>
+                    </a>
+                </li>
+                <li class="friend-container">
+                    <a href="{{ url_for('order') }}">
+                        <div class="friend-image"><img src="{{ url_for('static', filename='img/itachi.png') }}" alt=""></div>
+                        <p class="friend-name">Itachi Uchiha</p>
+                        <p class="friend-price">9 999$</p>
+                    </a>
+                </li>
+                <li class="friend-container">
+                    <a href="{{ url_for('order') }}">
+                        <div class="friend-image"><img src="{{ url_for('static', filename='img/konan.jpeg') }}" alt=""></div>
+                        <p class="friend-name">Konan</p>
+                        <p class="friend-price">249$</p>
+                    </a>
+                </li>
+            </ul>
+        </main>
+        <!-- Footer -->
+        {% include 'footer.html' %}
+        <script src="{{ url_for('static', filename='js/dom.js') }}"></script>
+    </body>
+</html>
