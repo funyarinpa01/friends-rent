@@ -24,6 +24,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    roles = ['friend', 'client']
     if request.method == 'POST':
         email = request.form['email']
         password_candidate = request.form['password']
@@ -45,7 +46,7 @@ def login():
                 return render_template('login.html', error='passwords do not match')
         else:
             render_template('login.html', error='email is not found')
-    return render_template('login.html')
+    return render_template('login.html', roles=roles)
 
 
 @app.route('/logout')
@@ -79,6 +80,7 @@ class RegistrationForm(Form):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    roles = ['friend', 'client']
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
         first_name = form.name.data
@@ -102,7 +104,7 @@ def register():
         flash("You were successfully registered", "success")
 
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, roles=roles)
 
 
 @app.route('/order', methods=['POST'])

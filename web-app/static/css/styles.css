@@ -125,7 +125,12 @@ body::after {
     background-color: transparent;
     color: #443f41;
     cursor: pointer;
-} 
+}
+
+.custom-select {
+    width:200px;
+    margin: 25px
+}
 
 /* End of Log In Page */
 
@@ -242,7 +247,7 @@ body::after {
 }
 
 .secondary-party-type {
-    color: #858283;  
+    color: #858283;
 }
 
 .party-selector li:last-child {
@@ -386,7 +391,7 @@ body::after {
 .submit-order-button:hover {
     background-color: #443f41;
     color: white;
-} 
+}
 
 .report-button {
     width: 170px;

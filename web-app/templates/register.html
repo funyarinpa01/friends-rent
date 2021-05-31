@@ -17,6 +17,13 @@
         <!-- Log In Input -->
         <div class="input-container">
             <form action="{{ url_for('register') }}" method="POST">
+                <div class="custom-select" style="width:200px;">
+                  <select name= roles method="GET" action="/register">
+                      {% for role in roles %}
+                      <option value= "{{role}}" SELECTED>{{role}}</option>"
+                      {% endfor %}
+                  </select>
+                </div>
                 <div class="personal-info">
                     <div class="col-6-md">
                         <input type="text" class="form-control" name="name" id="fname" placeholder="First Name">
