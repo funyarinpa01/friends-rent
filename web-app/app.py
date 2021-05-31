@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, logging
-from scripts.database import DataBase
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 import psycopg2
-from config import config
+import datetime
 
+from scripts.database import DataBase
+from scripts.queries import args_names, results_names
+from scripts.config import config
 
-db = DataBase()
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # don't touch it for now, stops browser from caching old css, etc.
@@ -32,6 +33,7 @@ def login():
         # conn = psycopg2.connect(**params)
         # cur = conn.cursor()
 
+        db = DataBase()
         res = db._run_query("SELECT * FROM users WHERE email = %s", [email])
         if len(res) > 0:
             entry = res[0]
@@ -130,15 +132,32 @@ def get_order_info():
 @app.route('/statistics', methods=['POST'])
 def get_query_info():
     if request.method == 'POST':
-        query_info = {
-            "query_id": request.form.get('query-id'),
-            "person_name": request.form.get('person-name'),
-            "n_times": request.form.get('times-num'),
-            "begin_date": request.form.get('begin-date'),
-            "end_date": request.form.get('end-date')
-        }
-        # Send Query to DB and re-render the page
-        data_ = [["First Name", "Last Name"], ["Yaroslav", "Morozevych"], ["Itachi", "Uchiha"]]
+        query_id = int(request.form.get('query-id'))
+        if query_id not in range(1, 13):
+            pass  # in production, throw some server error or reload with an error message
+            # in practice, this can only happen if someone intentionally hacks the select
+
+        args = []
+        for arg in args_names[query_id - 1]:
+            value = request.form.get(arg)
+            if not value:
+                return render_template('statistics.html', data=[])
+            try:
+                value = datetime.datetime.strptime(value, '%Y-%m-%d').date()
+            except ValueError as e:
+                if not str(e).endswith(" does not match format '%Y-%m-%d'"):  # this is a real error
+                    raise e
+            args.append(value)
+
+        # db = DataBase(**config())
+        db = DataBase()
+        data_ = db.run_task_query(query_id, args)
+
+        if not data_:
+            data_ = [['No results.']]
+        else:
+            data_.insert(0, results_names[query_id - 1])
+
         return render_template('statistics.html', data=data_)
 
 

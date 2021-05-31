@@ -2,7 +2,7 @@ import psycopg2
 import time
 import datetime
 
-from scripts.queries import queries, num_args
+from scripts.queries import queries, args_num
 
 
 class DataBase:
@@ -14,14 +14,10 @@ class DataBase:
             while True:
                 try:
                     self.conn = psycopg2.connect(  # ask @lmao_bs if you want to connect TODO fucking hide credentials
-                        # host="ec2-54-73-68-39.eu-west-1.compute.amazonaws.com",
-                        # database="d766e7a5lj891n",
-                        # user="mimmpbfogysuir",
-                        # password="ca24ec0e0a874062d4950b2064fb2745ab6f7478955a750c868b824f8974c632"
-                        host="localhost",
-                        database="postgres",
-                        user="postgres",
-                        password="postgres"
+                        host="ec2-54-73-68-39.eu-west-1.compute.amazonaws.com",
+                        database="d766e7a5lj891n",
+                        user="mimmpbfogysuir",
+                        password="ca24ec0e0a874062d4950b2064fb2745ab6f7478955a750c868b824f8974c632"
                     )
                     self.cur = self.conn.cursor()
                     break
@@ -38,9 +34,9 @@ class DataBase:
             raise TypeError(f"query_id must be of type integer, not {type(query_id)}")
         if not 1 <= query_id <= 12:
             raise ValueError(f"query_id must be from 1 to 12, not {query_id}")
-        if len(args) != num_args[query_id - 1]:
+        if len(args) != args_num[query_id - 1]:
             raise ValueError(
-                f"Query #{query_id} takes {num_args[query_id - 1]} arguments, yet {len(args)} were provided")
+                f"Query #{query_id} takes {args_num[query_id - 1]} arguments, yet {len(args)} were provided")
 
         self.cur.execute(queries[query_id - 1], args)
         if verbose:

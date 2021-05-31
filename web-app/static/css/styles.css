@@ -1,13 +1,17 @@
 body{
-    min-height:100vh;
-    margin:0;
-    position:relative;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
 }
 
 body::after {
     content: '';
     display: block;
     height: 50px; /* Set same as footer's height */
+}
+
+main {
+    margin-bottom: 100px;
 }
 
 /* Log In Page */
@@ -462,20 +466,32 @@ body::after {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width: 700px;
-    margin: 100px auto 50px auto;
+    width: 30%;
+    margin: 50px auto 50px auto;
+    font-family: Circle-Rounded-Light;
+    font-size: 18px;
+}
+
+.query-arguments div {
+    width: 54%;
+    margin: auto;
+    text-align: center;
 }
 
 .query-arguments li {
     margin: 0 0 30px 30px;
-    font-family: Circle-Rounded-Light;
-    font-size: 18px;
     color: #443f41;
     width: 200px;
     height: 30px;
-    border: none;
-    background-color: transparent;
     border-bottom: 2px solid rgba(68, 63, 65, 20);
+}
+
+.query-form-control {
+    font-family: Circle-Rounded-Light;
+    font-size: 18px;
+    width: 200px;
+    height: 30px;
+    border: none;
 }
 
 .query-form-control {
@@ -485,7 +501,6 @@ body::after {
     width: 200px;
     height: 30px;
     border: none;
-    border-bottom: 2px solid rgba(68, 63, 65, 20);
 }
 
 .query-button-container {
@@ -550,7 +565,11 @@ body::after {
 }
 
 .query-info-container {
+    font-family: Circle-Rounded-Light;
+    font-size: 18px;
     text-align: center;
+    width: 54%;
+    margin: 0 auto;
 }
 
 .query-info-container h2 {
