@@ -1,3 +1,4 @@
+
 DROP TABLE client CASCADE;
 DROP TABLE friend CASCADE;
 DROP TABLE day_off CASCADE;
@@ -12,14 +13,18 @@ DROP TABLE present CASCADE;
 CREATE TABLE client (
 	client_id serial primary key,
 	first_name VARCHAR(40) NOT NULL,
-	last_name VARCHAR(40) NOT NULL
+	last_name VARCHAR(40) NOT NULL,
+	email VARCHAR(320) NOT NULL,
+	password CHAR(77)
 );
 
 CREATE TABLE friend (
 	friend_id serial primary key,
 	friend_type INT NOT NULL,
 	first_name VARCHAR(40) NOT NULL,
-	last_name VARCHAR(40) NOT NULL
+	last_name VARCHAR(40) NOT NULL,
+	email VARCHAR(320) NOT NULL,
+	password CHAR(77)
 );
 
 CREATE TABLE day_off (
@@ -70,17 +75,17 @@ CREATE TABLE present (
 	category_id INT NOT NULL
 );
 
-INSERT INTO client (first_name, last_name) VALUES 
-('Oleksandr', 'Dubas'),
-('Yewgen', 'Domeretskiy'),
-('Vasya', 'Pupkin'),
-('Vasility', 'Utkin'),
-('Oleksandr', 'Pishnograev'),
-('Petro', 'Soloviov'),
-('Panas', 'Shevchenko'),
-('Lesya', 'Teliha'),
-('Volodymyr', 'Ostapenko'),
-('Vlad', 'Semikin');
+INSERT INTO client (first_name, last_name, email, password) VALUES 
+('Oleksandr', 'Dubas', 'Dubas@gmail.com', 'O'),
+('Yewgen', 'Domeretskiy', 'Domeretskiy@gmail.com', 'D'),
+('Vasya', 'Pupkin', 'Pupkin@gmail.com', 'P'),
+('Vasility', 'Utkin', 'Utkin@gmail.com', 'U'),
+('Oleksandr', 'Pishnograev', 'Pishnograev@gmail.com', 'P'),
+('Petro', 'Soloviov', 'Soloviov@gmail.com', 'S'),
+('Panas', 'Shevchenko', 'Shevchenko@gmail.com', 'S'),
+('Lesya', 'Teliha', 'Teliha@gmail.com', 'T'),
+('Volodymyr', 'Ostapenko', 'Ostapenko@gmail.com', 'O'),
+('Vlad', 'Semikin', 'Semikin@gmail.com', 'S');
 
 -- Change the date style
 SET datestyle = "ISO, DMY";
@@ -109,17 +114,17 @@ INSERT INTO friend_type (name) VALUES
 ('For drinking'),
 ('Other');
 
-INSERT INTO friend (friend_type, first_name, last_name) VALUES
-(1, 'Nazar', 'Mamonov'),
-(2, 'Pavlo', 'Yasinovskiy'),
-(3, 'Nazar', 'Dobrovolskyy'),
-(4, 'Ilya', 'Konstantynenko'),
-(5, 'Yarik', 'Morozevich'),
-(6, 'Yarema', 'Mischenko'),
-(7, 'Maxym', 'Kryval'),
-(8, 'Andrii', 'Uhera'),
-(9, 'Andrii', 'Turko'),
-(10, 'Pavlo', 'Semchyshyn');
+INSERT INTO friend (friend_type, first_name, last_name, email, password) VALUES
+(1, 'Nazar', 'Mamonov', 'Mamonov@gmail.com', 'M'),
+(2, 'Pavlo', 'Yasinovskiy', 'Yasinovskiy@gmail.com', 'Y'),
+(3, 'Nazar', 'Dobrovolskyy', 'Dobrovolskyy@gmail.com', 'D'),
+(4, 'Ilya', 'Konstantynenko', 'Konstantynenko@gmail.com', 'K'),
+(5, 'Yarik', 'Morozevich', 'Morozevich@gmail.com', 'M'),
+(6, 'Yarema', 'Mischenko', 'Mischenko@gmail.com', 'M'),
+(7, 'Maxym', 'Kryval', 'Kryval@gmail.com', 'K'),
+(8, 'Andrii', 'Uhera', 'Uhera@gmail.com', 'U'),
+(9, 'Andrii', 'Turko', 'Turko@gmail.com', 'T'),
+(10, 'Pavlo', 'Semchyshyn', 'Semchyshyn@gmail.com', 'S');
 
 INSERT INTO day_off (friend_id, date) VALUES
 (1, '05-05-2021'),
@@ -319,7 +324,7 @@ SELECT
 	WHERE (fc.friend_first_name || ' ' || fc.friend_last_name) = 'Nazar Mamonov' 
 		AND begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
 	GROUP BY friend_name, ft.name
-	HAVING COUNT(fc.friend_id) >= 1;
+	HAVING COUNT(DISTINCT fc.friend_id) >= 1;
 
 -- 8. Вивести подарунки у порядку спадання середньої кiлькостi вихiдних, що брали 
 -- найманi друзi, якi отримували подарунок вiд клiєнта С протягом вказаного перiоду (з дати F по дату T);
@@ -339,9 +344,10 @@ SELECT fc.friend_first_name || ' ' || fc.friend_last_name AS friend_name
 	FROM friend_client fc
 	LEFT JOIN client_report cr ON fc.client_id = cr.client_id
 	LEFT JOIN report r ON fc.friend_id = r.friend_id
-	WHERE begin_date <= '06-05-2021' AND '06-05-2021' <= end_date
+	WHERE date <= '25-07-2021' AND '25-07-2021' <= date
 	GROUP BY friend_name
-	HAVING COUNT(cr.client_id) >= 2;
+	HAVING COUNT(cr.client_id) >= 2
+	ORDER BY COUNT(r.report_id) DESC;
 
 -- 10. Знайти усi спiльнi подiї для клiєнта С та найманого друга Х 
 -- за вказаний перiод (з дати F по дату T);
@@ -374,6 +380,10 @@ WHERE date IN (
 	GROUP BY date
 	HAVING COUNT(distinct friend_name) >= 2 AND COUNT(distinct friend_name) <= 2)
 GROUP BY date;
+
+-- SELECT date FROM friend_day_off
+-- GROUP BY date
+-- HAVING COUNT(distinct friend_name) >= 2 AND COUNT(distinct friend_name) <= 2;
 	
 
 --12. По мiсяцях знайти середню кiлькiсть клiєнтiв у групi, що реєстрували скаргу
