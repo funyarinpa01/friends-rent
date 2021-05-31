@@ -14,10 +14,14 @@ class DataBase:
             while True:
                 try:
                     self.conn = psycopg2.connect(  # ask @lmao_bs if you want to connect TODO fucking hide credentials
-                        host="ec2-54-73-68-39.eu-west-1.compute.amazonaws.com",
-                        database="d766e7a5lj891n",
-                        user="mimmpbfogysuir",
-                        password="ca24ec0e0a874062d4950b2064fb2745ab6f7478955a750c868b824f8974c632"
+                        # host="ec2-54-73-68-39.eu-west-1.compute.amazonaws.com",
+                        # database="d766e7a5lj891n",
+                        # user="mimmpbfogysuir",
+                        # password="ca24ec0e0a874062d4950b2064fb2745ab6f7478955a750c868b824f8974c632"
+                        host="localhost",
+                        database="postgres",
+                        user="postgres",
+                        password="postgres"
                     )
                     self.cur = self.conn.cursor()
                     break

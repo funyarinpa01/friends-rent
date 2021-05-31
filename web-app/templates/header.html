@@ -10,7 +10,11 @@
     </nav>
 
     <div class="my-account-container">
-        <a href="{{ url_for('login') }}" target="_blank">My Account</a>
-        <div class="account-photo"></div>
+        {% if session.logged_in %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
     </div>
 </header>

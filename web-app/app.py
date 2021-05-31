@@ -6,9 +6,13 @@ import psycopg2
 from config import config
 
 
+db = DataBase()
+
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # don't touch it for now, stops browser from caching old css, etc.
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
+client_info_ = None
 friend_info_ = None
 order_info_ = None
 
@@ -18,9 +22,37 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password_candidate = request.form['password']
+
+        # params = config()
+        # conn = psycopg2.connect(**params)
+        # cur = conn.cursor()
+
+        res = db._run_query("SELECT * FROM users WHERE email = %s", [email])
+        if len(res) > 0:
+            entry = res[0]
+            password = entry[3]
+            if sha256_crypt.verify(password_candidate, password):
+                session['logged_in'] = True
+                session['username'] = email
+                flash('logged in', 'success')
+                return redirect(url_for('index'))
+            else:
+                return render_template('login.html', error='passwords do not match')
+        else:
+            render_template('login.html', error='email is not found')
     return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('logged out', 'success')
+    return redirect(url_for('login'))
 
 
 @app.route('/shop')
@@ -45,8 +77,8 @@ class RegistrationForm(Form):
     password = PasswordField(u'Password', [validators.InputRequired()])
 
 
-@app.route('/index', methods=['GET', 'POST'])
-def get_client_info():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
         first_name = form.name.data
@@ -58,9 +90,8 @@ def get_client_info():
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
 
-        cur.execute(
-            "INSERT INTO users(first_name, second_name, email, password) VALUES (%s, %s, %s, %s)",
-            (first_name, second_name, email, password))
+        cur.execute("INSERT INTO users(first_name, second_name, email, password) VALUES (%s, %s, %s, %s)",
+                    (first_name, second_name, email, password))
 
         cur.close()
 
@@ -70,8 +101,8 @@ def get_client_info():
 
         flash("You were successfully registered", "success")
 
-        return redirect(url_for('shop'))
-    return render_template('index.html', form=form)
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
 
 @app.route('/order', methods=['POST'])
@@ -112,6 +143,5 @@ def get_query_info():
 
 
 if __name__ == '__main__':
-    app.secret_key = 'super secret key'
-    app.config['SESSION_TYPE'] = 'filesystem'
+    app.secret_key = 'akatsuki php developers'
     app.run(debug=True)
